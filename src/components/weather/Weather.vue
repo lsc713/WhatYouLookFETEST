@@ -12,7 +12,7 @@
             </div>
         </div>
         <div v-else>
-            <p>ㄱㄷㄱㄷ</p>
+            <p>ㄱㄷㄱㄷzz</p>
         </div>
         
         <hr>
