@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <h2>AboutView</h2>
   </div>
 </template>
@@ -8,6 +8,6 @@
 
 </script>
 
-<style lang="scss" scoped>
+<style>
 
 </style>

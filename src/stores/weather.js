@@ -15,7 +15,7 @@ export const useWeatherStore = defineStore('weather',()=>{
       }
     })
     .then((res)=>{
-      
+      console.log(res.data)
       console.log(res.data.response.body.items.item)
       weatherList.value = res.data.response.body.items.item
     })

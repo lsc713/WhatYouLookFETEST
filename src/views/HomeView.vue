@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
 <h2>HomeView</h2>
 <RouterView/>
   </div>
