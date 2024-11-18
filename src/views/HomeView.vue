@@ -1,12 +1,15 @@
 <template>
   <div >
 <h2>HomeView</h2>
-<RouterView/>
+<Weather></Weather>>
+<ClothRecommend></ClothRecommend>
   </div>
   
 </template>
 
 <script setup>
+import ClothRecommend from '@/components/cloth/ClothRecommend.vue';
+import Weather from '@/components/weather/Weather.vue'
 
 </script>
 

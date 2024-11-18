@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="store.weatherList.length>0">
+        <div v-if="store.weatherList.length > 0">
             <h3 class="text-center ">날씨 정보</h3>
             <hr>
             <div class="container text-center background-image">
@@ -27,44 +27,45 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        
+
         <hr>
-        
+
     </div>
 </template>
 
 
 <script setup>
-import {useWeatherStore} from '@/stores/weather';
-import { ref,onMounted,watch,computed } from 'vue';
+import { useClothStore } from '@/stores/cloth';
+import { useWeatherStore } from '@/stores/weather';
+import { ref, onMounted, watch, computed } from 'vue';
 const store = useWeatherStore();
 
 const longitude = ref("");
 const latitude = ref("");
 
-const getUserLocation = ()=>{
-    if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition((position)=>{
+const getUserLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
             longitude.value = position.coords.longitude;
             latitude.value = position.coords.latitude;
-            store.getWeatherList(longitude.value,latitude.value);
+            store.getWeatherList(longitude.value, latitude.value);
         })
     }
 }
-const weatherIcon = computed(()=>{
-    if(pty.value==0){
-        switch (sky.value){
-        case "1":
-            return "bi bi-brightness-high-fill";
-        case "3":
-            return "bi bi-cloudy-fill";
-        case "4":
-            return "bi bi-cloud";
-        default :
-            return "bi-sun";    
-       }
-    }else{
-        switch(pty.value){
+const weatherIcon = computed(() => {
+    if (pty.value == 0) {
+        switch (sky.value) {
+            case "1":
+                return "bi bi-brightness-high-fill";
+            case "3":
+                return "bi bi-cloudy-fill";
+            case "4":
+                return "bi bi-cloud";
+            default:
+                return "bi-sun";
+        }
+    } else {
+        switch (pty.value) {
             case "1":
                 return "bi bi-cloud-drizzle-fill";
             case "2":
@@ -75,8 +76,8 @@ const weatherIcon = computed(()=>{
                 return "bi bi-cloud-drizzle-fill";
         }
     }
-    
-        
+
+
 })
 
 const tmp = ref(null);
@@ -86,16 +87,16 @@ const pop = ref(0);
 const tmn = ref(null);
 const tmx = ref(null);
 
-onMounted(()=>{
+onMounted(() => {
     getUserLocation();
 })
-const mapWeatherData = () =>{
+const mapWeatherData = () => {
     const weatherData = store.weatherList
     console.log(weatherData)
-    weatherData.forEach((item)=>{
-        switch(item.category){
+    weatherData.forEach((item) => {
+        switch (item.category) {
             case 'TMP':
-                tmp.value=item.fcstValue;
+                tmp.value = item.fcstValue;
                 break;
             case 'TMN':
                 tmn.value = item.fcstValue;
@@ -117,7 +118,12 @@ const mapWeatherData = () =>{
         }
     })
 }
-watch(()=> store.weatherList,mapWeatherData,{immediate:true});
+const clothStore = useClothStore();
+watch(() => store.weatherList, () => {
+    const temp = store.weatherList.find(item => item.category === 'TMP')?.fcstValue;
+    if (temp) clothStore.setTemperature(Number(temp))
+}, { immediate: true })
+watch(() => store.weatherList, mapWeatherData, { immediate: true });
 </script>
 
 <style >
@@ -129,27 +135,27 @@ body {
     --rg-gradient-b-pressed: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .5) 7.63%, rgba(151, 138, 255, .67) 37.94%, rgba(0, 210, 229, .83) 65.23%, #8ffff8 92.12%);
     --rg-gradient-c-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .25) 7.63%, rgba(187, 178, 252, 0.25) 37.94%, rgba(124, 244, 255, 0.25) 65.23%, rgba(143, 255, 248, .25) 92.12%);
     --rg-gradient-c-pressed: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .5) 7.63%, rgba(151, 138, 255, .67) 37.94%, rgba(0, 210, 229, .83) 65.23%, #8ffff8 92.12%);
-  background: 
-  /* var(--rg-gradient-a-25), */
-  /* var(--rg-gradient-b-25), */
-  var(--rg-gradient-c-25)
-  ;
+    background:
+        /* var(--rg-gradient-a-25), */
+        /* var(--rg-gradient-b-25), */
+        var(--rg-gradient-c-25);
 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 .background-image {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
 }
-.iconSize{
+
+.iconSize {
     font-size: 100px;
 }
 </style>

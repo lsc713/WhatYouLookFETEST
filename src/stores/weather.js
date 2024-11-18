@@ -1,7 +1,8 @@
-import { ref } from 'vue'
+import { ref,watch } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import router from '@/router'
+import { useClothStore } from './cloth'
 
 const REST_API_URL = `http://localhost:8080/api/v1/weather`
 
@@ -23,5 +24,6 @@ export const useWeatherStore = defineStore('weather',()=>{
       console.log(res)
     })
   }
+  
   return {getWeatherList,weatherList}
 })

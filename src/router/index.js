@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ListView from '@/views/ListView.vue'
 import Weather from '@/components/weather/Weather.vue'
+import ClothRecommend from '@/components/cloth/ClothRecommend.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,11 @@ const router = createRouter({
           name:"Weather",
           component: Weather
         },
+        {
+          path: "",
+          name:"ClothRecommend",
+          component: ClothRecommend
+        },
       ]
     },
     {
@@ -26,6 +32,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: ListView,
     },
+    
   ],
 })
 
