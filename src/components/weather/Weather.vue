@@ -130,24 +130,40 @@ watch(() => store.weatherList, mapWeatherData, { immediate: true });
 /* 전역 스타일로 body에 대한 스타일을 정의 */
 body {
     --rg-gradient-a-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(250, 236, 248, 0.25) 7.63%, rgba(196, 188, 252, 0.25) 37.94%, rgba(0, 234, 255, 0.25) 65.23%, rgba(193, 255, 251, 0.25) 92.12%);
-    --rg-gradient-a-pressed: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .5) 7.63%, rgba(151, 138, 255, .67) 37.94%, rgba(0, 210, 229, .83) 65.23%, #8ffff8 92.12%);
     --rg-gradient-b-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .25) 7.63%, rgba(151, 138, 255, .25) 37.94%, rgba(0, 210, 229, .25) 65.23%, rgba(143, 255, 248, .25) 92.12%);
-    --rg-gradient-b-pressed: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .5) 7.63%, rgba(151, 138, 255, .67) 37.94%, rgba(0, 210, 229, .83) 65.23%, #8ffff8 92.12%);
-    --rg-gradient-c-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .25) 7.63%, rgba(187, 178, 252, 0.25) 37.94%, rgba(124, 244, 255, 0.25) 65.23%, rgba(143, 255, 248, .25) 92.12%);
-    --rg-gradient-c-pressed: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .5) 7.63%, rgba(151, 138, 255, .67) 37.94%, rgba(0, 210, 229, .83) 65.23%, #8ffff8 92.12%);
+    --rg-gradient-c-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .25) 7.63%, rgba(187, 178, 252, 0.25) 37.94%, rgba(124, 244, 255, 0.25) 65.23%, rgba(143, 255, 248, 0.25) 92.12%);
     background:
-        /* var(--rg-gradient-a-25), */
-        /* var(--rg-gradient-b-25), */
+        var(--rg-gradient-a-25),
+        var(--rg-gradient-b-25),
         var(--rg-gradient-c-25);
-
-    background-position: center;
+    background-position: 0% 0%;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 600% 600%; /* 배경 크기를 더 크게 설정 */
     height: 100vh;
     margin: 0;
     padding: 0;
-    animation: flowingBackground 10s ease infinite;
+    animation: flowingBackground 30s ease infinite; /* 애니메이션을 더 느리게 하여 흐름을 더 부드럽게 */
 }
+
+/* 흐르는 배경 애니메이션 */
+@keyframes flowingBackground {
+    0% {
+        background-position: 0% 0%;
+    }
+    25% {
+        background-position: 50% 50%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    75% {
+        background-position: 50% 50%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
 
 .background-image {
     background-position: center;
@@ -158,18 +174,6 @@ body {
 
 .iconSize {
     font-size: 100px;
-}
-
-@keyframes flowingBackground{
-    0%{
-        background-position: 0% 50%;
-    }
-    50%{
-        background-position: 100% 50%;
-    }
-    100%{
-        background-position: 0% 50%;
-    }
 }
 
 </style>

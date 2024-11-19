@@ -83,4 +83,3 @@ const shoes = computed(() => {
         
 });
 </script>
-
