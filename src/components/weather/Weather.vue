@@ -146,6 +146,7 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
+    animation: flowingBackground 10s ease infinite;
 }
 
 .background-image {
@@ -158,4 +159,17 @@ body {
 .iconSize {
     font-size: 100px;
 }
+
+@keyframes flowingBackground{
+    0%{
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 100% 50%;
+    }
+    100%{
+        background-position: 0% 50%;
+    }
+}
+
 </style>
