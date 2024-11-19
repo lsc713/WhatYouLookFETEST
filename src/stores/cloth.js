@@ -3,25 +3,25 @@ import axios from 'axios'
 import {ref} from 'vue'
 
 export const useClothStore = defineStore('cloth',()=>{
-    const clothes = ref([])
+    const clothes = ref({tops:[],bottoms:[],outers:[],shoes:[]})
 
 
-    const getClothesRecommendation = async (temperature)=>{
-        try{
-            const response = await axios.get('http://localhost:8080/api/v1/cloth',{
+    const getClothesRecommendation = (temperature)=>{
+        axios.get('http://localhost:8080/api/v1/cloth',{
             params: {temperature}
             })
-            console.log(response.data)
-            clothes.value = response.data
-        } 
-        catch (error){
+            .then((response)=>{
+              clothes.value = response.data
+              console.log(clothes.value.tops)
+            })
+            .catch ((error)=>{
             console.log('clothes reommendation failed',error)
-        }
+        });
     }
     const temperature = ref(null)
     const setTemperature = (temp) =>{
         temperature.value = temp
-        getClothesRecommendation(temp)
+        // getClothesRecommendation(temp)
     }
-    return {clothes,getClothesRecommendation,setTemperature}
+    return {clothes,getClothesRecommendation,setTemperature,temperature}
 })

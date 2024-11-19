@@ -8,6 +8,7 @@ const REST_API_URL = `http://localhost:8080/api/v1/weather`
 
 export const useWeatherStore = defineStore('weather',()=>{
   const weatherList = ref([])
+  const currentTemperature = ref(null)
   const getWeatherList = function(longitude, latitude){
     axios.get(REST_API_URL,{
       params:{
@@ -16,8 +17,12 @@ export const useWeatherStore = defineStore('weather',()=>{
       }
     })
     .then((res)=>{
-      console.log(res.data)
-      console.log(res.data.response.body.items.item)
+      const temperatureItem = res.data.response.body.items.item.find(item => item.category === "TMP")
+      if(temperatureItem){
+        currentTemperature.value = temperatureItem.fcstValue;
+      }
+      // console.log(res.data)
+      // console.log(res.data.response.body.items.item)
       weatherList.value = res.data.response.body.items.item
     })
     .catch((res)=>{
@@ -25,5 +30,5 @@ export const useWeatherStore = defineStore('weather',()=>{
     })
   }
   
-  return {getWeatherList,weatherList}
+  return {getWeatherList,weatherList,currentTemperature}
 })
