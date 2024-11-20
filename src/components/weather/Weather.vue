@@ -8,12 +8,13 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-4 border border-info p-2 mb-2 border-opacity-75">
-                        일 최고 기온 (TMX): {{ tmx }}°C
+                        일 최고 기온 (TMX): {{ maxTmp }}°C
                     </div>
                     <div class="col-4 border border-info p-2 mb-2 border-opacity-50">
                         일 최저 기온 (TMN): {{ tmn }}°C
                     </div>
-                    <i :class="weatherIcon" class="iconSize">{{ tmp }}°C</i>
+                    <!-- <i :class="weatherIcon" class="iconSize">{{ tmp }}°C</i> -->
+                    <i :class="weatherIcon" class="iconSize">{{ curTmp }}°C</i>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-4 border border-info p-2 mb-2 border-opacity-10">
@@ -49,6 +50,9 @@ const getUserLocation = () => {
             longitude.value = position.coords.longitude;
             latitude.value = position.coords.latitude;
             store.getWeatherList(longitude.value, latitude.value);
+            store.getCurrentWeatherList(longitude.value, latitude.value);
+            store.getTodayMaxTemperature(longitude.value, latitude.value);
+            store.getPYTNow(longitude.value, latitude.value);
         })
     }
 }
@@ -79,7 +83,8 @@ const weatherIcon = computed(() => {
 
 
 })
-
+const curTmp = ref(null);
+const maxTmp = ref(null);
 const tmp = ref(null);
 const sky = ref(null);
 const pty = ref(null);
@@ -92,6 +97,10 @@ onMounted(() => {
 })
 const mapWeatherData = () => {
     const weatherData = store.weatherList
+    const currentTemperature = store.currentTemperature
+    curTmp.value = currentTemperature;
+    maxTmp.value = store.maxTemperature;
+    pty.value = store.getPTY;
     console.log(weatherData)
     weatherData.forEach((item) => {
         switch (item.category) {
@@ -122,8 +131,11 @@ const clothStore = useClothStore();
 watch(() => store.weatherList, () => {
     const temp = store.weatherList.find(item => item.category === 'TMP')?.fcstValue;
     if (temp) clothStore.setTemperature(Number(temp))
-}, { immediate: true })
+}, { immediate: true }) 
 watch(() => store.weatherList, mapWeatherData, { immediate: true });
+watch(()=>store.currentTemperature, mapWeatherData, { immediate: true })
+watch(()=>store.maxTemperature, mapWeatherData, { immediate: true })
+watch(()=>store.getPTY, mapWeatherData, { immediate: true })
 </script>
 
 <style >
