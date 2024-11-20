@@ -7,10 +7,10 @@
                 <div class="row justify-content-start ">
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-4 border border-info p-2 mb-2 border-opacity-75">
+                    <div class="col-4 border  p-2 mb-2 border-opacity-75">
                         일 최고 기온 (TMX): {{ maxTmp }}°C
                     </div>
-                    <div class="col-4 border border-info p-2 mb-2 border-opacity-50">
+                    <div class="col-4 border  p-2 mb-2 border-opacity-50">
                         일 최저 기온 (TMN): {{ tmn }}°C
                     </div>
                     <!-- <i :class="weatherIcon" class="iconSize">{{ tmp }}°C</i> -->
@@ -34,7 +34,6 @@
     </div>
 </template>
 
-
 <script setup>
 import { useClothStore } from '@/stores/cloth';
 import { useWeatherStore } from '@/stores/weather';
@@ -56,6 +55,7 @@ const getUserLocation = () => {
         })
     }
 }
+
 const weatherIcon = computed(() => {
     if (pty.value == 0) {
         switch (sky.value) {
@@ -80,9 +80,8 @@ const weatherIcon = computed(() => {
                 return "bi bi-cloud-drizzle-fill";
         }
     }
-
-
 })
+
 const curTmp = ref(null);
 const maxTmp = ref(null);
 const tmp = ref(null);
@@ -95,13 +94,14 @@ const tmx = ref(null);
 onMounted(() => {
     getUserLocation();
 })
+
 const mapWeatherData = () => {
-    const weatherData = store.weatherList
-    const currentTemperature = store.currentTemperature
+    const weatherData = store.weatherList;
+    const currentTemperature = store.currentTemperature;
     curTmp.value = currentTemperature;
     maxTmp.value = store.maxTemperature;
     pty.value = store.getPTY;
-    console.log(weatherData)
+    console.log(weatherData);
     weatherData.forEach((item) => {
         switch (item.category) {
             case 'TMP':
@@ -127,65 +127,47 @@ const mapWeatherData = () => {
         }
     })
 }
+
 const clothStore = useClothStore();
 watch(() => store.weatherList, () => {
     const temp = store.weatherList.find(item => item.category === 'TMP')?.fcstValue;
     if (temp) clothStore.setTemperature(Number(temp))
-}, { immediate: true }) 
+}, { immediate: true });
+
 watch(() => store.weatherList, mapWeatherData, { immediate: true });
-watch(()=>store.currentTemperature, mapWeatherData, { immediate: true })
-watch(()=>store.maxTemperature, mapWeatherData, { immediate: true })
-watch(()=>store.getPTY, mapWeatherData, { immediate: true })
+watch(() => store.currentTemperature, mapWeatherData, { immediate: true });
+watch(() => store.maxTemperature, mapWeatherData, { immediate: true });
+watch(() => store.getPTY, mapWeatherData, { immediate: true });
 </script>
 
-<style >
-/* 전역 스타일로 body에 대한 스타일을 정의 */
-body {
-    --rg-gradient-a-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(250, 236, 248, 0.25) 7.63%, rgba(196, 188, 252, 0.25) 37.94%, rgba(0, 234, 255, 0.25) 65.23%, rgba(193, 255, 251, 0.25) 92.12%);
-    --rg-gradient-b-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .25) 7.63%, rgba(151, 138, 255, .25) 37.94%, rgba(0, 210, 229, .25) 65.23%, rgba(143, 255, 248, .25) 92.12%);
-    --rg-gradient-c-25: linear-gradient(var(--rg-gradient-angle, 96deg), rgba(255, 148, 241, .25) 7.63%, rgba(187, 178, 252, 0.25) 37.94%, rgba(124, 244, 255, 0.25) 65.23%, rgba(143, 255, 248, 0.25) 92.12%);
-    background:
-        var(--rg-gradient-a-25),
-        var(--rg-gradient-b-25),
-        var(--rg-gradient-c-25);
-    background-position: 0% 0%;
-    background-repeat: no-repeat;
-    background-size: 600% 600%; /* 배경 크기를 더 크게 설정 */
+<style scoped>
+.weather-container {
+    --gradient-start: #ff94f1;
+    --gradient-end: #8ffff8;
+    background: linear-gradient(96deg, var(--gradient-start), var(--gradient-end));
+    background-size: 200% 200%;
+    animation: gradientAnimation 30s ease infinite;
     height: 100vh;
-    margin: 0;
-    padding: 0;
-    animation: flowingBackground 30s ease infinite; /* 애니메이션을 더 느리게 하여 흐름을 더 부드럽게 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* 흐르는 배경 애니메이션 */
-@keyframes flowingBackground {
+@keyframes gradientAnimation {
     0% {
-        background-position: 0% 0%;
+        background-position: 0% 50%;
     }
-    25% {
-        background-position: 50% 50%;
-    }
+
     50% {
-        background-position: 100% 0%;
+        background-position: 100% 50%;
     }
-    75% {
-        background-position: 50% 50%;
-    }
+
     100% {
-        background-position: 0% 0%;
+        background-position: 0% 50%;
     }
-}
-
-
-.background-image {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vh;
 }
 
 .iconSize {
-    font-size: 100px;
+    font-size: 20px;
 }
-
 </style>
