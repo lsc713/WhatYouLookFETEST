@@ -3,7 +3,7 @@
         <div v-if="store.weatherList.length > 0">
             <h3 class="text-center ">날씨 정보</h3>
             <hr>
-            <div class="container text-center background-image">
+            <div class=" container text-center background-image">
                 <div class="row justify-content-start ">
                 </div>
                 <div class="row justify-content-center">
@@ -140,7 +140,7 @@ watch(() => store.maxTemperature, mapWeatherData, { immediate: true });
 watch(() => store.getPTY, mapWeatherData, { immediate: true });
 </script>
 
-<style scoped>
+<style >
 .weather-container {
     --gradient-start: #ff94f1;
     --gradient-end: #8ffff8;

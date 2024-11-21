@@ -13,6 +13,9 @@
                 <li class="nav-item">
                 <RouterLink class="nav-link " to="/list">Board</RouterLink>
                 </li>
+                <li class="nav-item">
+                <RouterLink class="nav-link " to="/upload">FileUpload</RouterLink>
+                </li>
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Dropdown
