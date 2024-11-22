@@ -3,7 +3,7 @@ import axios from 'axios'
 import {ref} from 'vue'
 
 export const useClothStore = defineStore('cloth',()=>{
-    const clothes = ref({tops:[],bottoms:[],outers:[],shoes:[]})
+    const clothes = ref([])
 
 
     const getClothesRecommendation = (temperature)=>{
@@ -11,8 +11,8 @@ export const useClothStore = defineStore('cloth',()=>{
             params: {temperature}
             })
             .then((response)=>{
-              clothes.value = response.data
-              console.log(clothes.value.tops)
+              clothes.value = response.data.images
+              console.log("clothes.value:",clothes.value)
             })
             .catch ((error)=>{
             console.log('clothes reommendation failed',error)

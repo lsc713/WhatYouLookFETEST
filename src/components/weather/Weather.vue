@@ -101,7 +101,8 @@ const mapWeatherData = () => {
     curTmp.value = currentTemperature;
     maxTmp.value = store.maxTemperature;
     pty.value = store.getPTY;
-    console.log(weatherData);
+    sky.value = store.SKY;
+    // console.log(weatherData);
     weatherData.forEach((item) => {
         switch (item.category) {
             case 'TMP':
@@ -140,32 +141,8 @@ watch(() => store.maxTemperature, mapWeatherData, { immediate: true });
 watch(() => store.getPTY, mapWeatherData, { immediate: true });
 </script>
 
-<style >
-.weather-container {
-    --gradient-start: #ff94f1;
-    --gradient-end: #8ffff8;
-    background: linear-gradient(96deg, var(--gradient-start), var(--gradient-end));
-    background-size: 200% 200%;
-    animation: gradientAnimation 30s ease infinite;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+<style scoped>
 
-@keyframes gradientAnimation {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
 
 .iconSize {
     font-size: 20px;

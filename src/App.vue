@@ -4,12 +4,14 @@
     <div class="weather-container">
       <RouterView/>
     </div>
+    <Zodiac></Zodiac>
     
   </div>
 </template>
 
 <script setup>
 import TheHeaderNav from '@/components/common/TheHeaderNav.vue'
+import Zodiac from './components/Zodiac.vue';
 </script>
 
 <style>

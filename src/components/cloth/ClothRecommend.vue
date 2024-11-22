@@ -1,85 +1,71 @@
 <template>
-    <div class="clothes-recommend">
-        <h3>오늘의 옷 추천</h3>
-        <div v-if="clothStore.clothes.tops.length > 0">
-            <div class="row">
-                <div class="col-3">
-                    <h4>상의</h4>
-                    <ul class="list-unstyled">
-                        <li v-for="top in tops" :key="top.id">
-                            {{ top.cloth_name }}
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-3">
-                    <h4>하의</h4>
-                    <ul class="list-unstyled">
-                        <li v-for="bottom in bottoms" :key="bottom.id">
-                            {{ bottom.cloth_name }}
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-3">
-                    <h4>외투</h4>
-                    <ul class="list-unstyled">
-                        <li v-for="outer in outers" :key="outer.id">
-                            {{ outer.cloth_name }}
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-3">
-                    <h4>신발</h4>
-                    <ul class="list-unstyled">
-                        <li v-for="shoe in shoes" :key="shoe.id">
-                            {{ shoe.cloth_name }}
-                        </li>
-                    </ul>
-                </div>
+    <div>
+      <!-- 옷 추천 정보 표시 -->
+      <div v-if="clothStore.clothes.length > 0">
+        <h3 class="text-center">오늘의 옷 추천</h3>
+        <hr>
+        <div class="container text-center background-image">
+          <div class="row justify-content-start">
+            <!-- 옷 추천 항목을 순회하여 표시 -->
+            <div class="col-4 border p-2 mb-2 border-opacity-75" v-for="image in images" :key="image.id">
+              <!-- <h5>{{ image.originalName }}</h5> -->
+              <img :src="getImageUrl(image.uniqueName)" alt="Image" class="img-fluid" />
             </div>
+          </div>
         </div>
-        <div v-else>
-            <p>추천할 옷이 없습니다.</p>
+      </div>
+  
+      <!-- 옷 추천이 없을 때 로딩 화면 표시 -->
+      <div v-else class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
+      </div>
+  
+      <hr>
     </div>
-</template>
-
-<script setup>
-import { computed, watch } from 'vue';
-import { useClothStore } from '@/stores/cloth';
-import { useWeatherStore } from '@/stores/weather';
-
-const weatherStore = useWeatherStore();
-const clothStore = useClothStore();
-
-const getClothList = (temperature) => {
+  </template>
+  
+  <script setup>
+  import { ref, watch, computed } from 'vue';
+  import { useClothStore } from '@/stores/cloth';
+  import { useWeatherStore } from '@/stores/weather';
+  
+  const clothStore = useClothStore();
+  const weatherStore = useWeatherStore();
+  
+  // 날씨 온도 정보가 변할 때 옷 추천을 가져오는 함수
+  const getClothList = (temperature) => {
     if (temperature !== null) {
-        clothStore.getClothesRecommendation(temperature);
+        
+      clothStore.getClothesRecommendation(temperature);
     }
-}
-
-
-watch(() => weatherStore.currentTemperature, (newTemp) => {
-    if (newTemp !== null) {
+  };
+  
+  // 옷 목록을 computed로 가져옵니다
+  const images = computed(() => {
+    return clothStore.clothes;
+  });
+  
+    // 날씨가 변경될 때 기온이 null이 아닐 경우에만 getClothList를 호출
+    watch(() => weatherStore.currentTemperature, (newTemp, oldTemp) => {
+    if (newTemp !== oldTemp && newTemp !== null) {
+        // 기온이 null이 아니고 변경되었을 때 옷 추천 요청
         getClothList(newTemp);
     }
-});
-
-const tops = computed(() => {
-    // clothStore.clothes가 유효한지 먼저 체크하고, 그 후 필터링합니다.
-    return clothStore.clothes.tops;
-});
-
-const bottoms = computed(() => {
-    return clothStore.clothes.bottoms;
-        
-});
-
-const outers = computed(() => {
-    return clothStore.clothes.outers;
-        
-});
-const shoes = computed(() => {
-    return clothStore.clothes.shoes;
-        
-});
-</script>
+    }, { immediate: true });
+  
+  // 이미지를 가져오는 함수
+  const getImageUrl = (uniqueName) => {
+    const baseUrl = import.meta.env.VITE_S3_BASE_URL;
+    // console.log(`${baseUrl}${uniqueName}`)
+    return `${baseUrl}${uniqueName}`; // 완전한 이미지 URL 반환
+  };
+  </script>
+  
+  <style scoped>
+  .iconSize {
+    font-size: 20px;
+  }
+  </style>
+  

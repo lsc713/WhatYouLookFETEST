@@ -9,6 +9,7 @@ export const useWeatherStore = defineStore('weather', () => {
   const currentTemperature = ref(null);
   const maxTemperature = ref(null);
   const getPTY = ref(null);
+  const SKY = ref(null);
 
   // 공통 API 호출 함수
   const fetchWeatherData = async (endpoint, longitude, latitude, callback) => {
@@ -26,13 +27,13 @@ export const useWeatherStore = defineStore('weather', () => {
   };
 
   const getWeatherList = (longitude, latitude) => {
-    fetchWeatherData('', longitude, latitude, (res) => {
+    fetchWeatherData('/TMN', longitude, latitude, (res) => {
       weatherList.value = res.data.response.body.items.item;
     });
   };
 
   const getCurrentWeatherList = (longitude, latitude) => {
-    fetchWeatherData('/2', longitude, latitude, (res) => {
+    fetchWeatherData('/CurrentTMP', longitude, latitude, (res) => {
       const temperatureItem = res.data.response.body.items.item.find(
         (item) => item.category === 'T1H'
       );
@@ -43,7 +44,7 @@ export const useWeatherStore = defineStore('weather', () => {
   };
 
   const getTodayMaxTemperature = (longitude, latitude) => {
-    fetchWeatherData('/3', longitude, latitude, (res) => {
+    fetchWeatherData('/TMX', longitude, latitude, (res) => {
       const temperatureItem = res.data.response.body.items.item.find(
         (item) => item.category === 'TMX'
       );
@@ -54,17 +55,28 @@ export const useWeatherStore = defineStore('weather', () => {
   };
 
   const getPYTNow = (longitude, latitude) => {
-    fetchWeatherData('/4', longitude, latitude, (res) => {
+    fetchWeatherData('/PTY', longitude, latitude, (res) => {
+      
       const temperatureItem = res.data.response.body.items.item.find(
-        (item) => item.category === 'TMX'
+        (item) => item.category === 'PTY'
       );
-      if (temperatureItem) {
+      
+      if (temperatureItem.fcstValue==0) {
         getPTY.value = temperatureItem.fcstValue;
+        // console.log(getPTY.value)
+        if(getPTY.value==0){
+          fetchWeatherData('/SKY',longitude,latitude,(res)=>{
+            SKY.value = res.data.response.body.items.item.find(
+              (item) => item.category === 'SKY'
+            )
+          })
+        }
       }
     });
   };
 
   return {
+    SKY,
     getWeatherList,
     weatherList,
     currentTemperature,
