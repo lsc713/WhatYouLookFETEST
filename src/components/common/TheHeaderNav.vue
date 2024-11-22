@@ -11,18 +11,28 @@
                 <RouterLink class="nav-link " aria-current="page" to="/">Weather</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink class="nav-link " to="/list">Board</RouterLink>
+                <RouterLink class="nav-link " :to="{name: 'boardList'}">Board</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink class="nav-link " to="/upload">FileUpload</RouterLink>
+                <RouterLink class="nav-link " :to="{name: 'todayFortune'}">TodayFortune</RouterLink>
+                </li>
+                <li class="nav-item">
+                <RouterLink :to="{name: 'userRegister'}">SignUp</RouterLink>
+                </li>
+                <li class="nav-item">
+                <RouterLink :to="{name: 'userLogin'}">Login</RouterLink>
+                </li>
+                <li class="nav-item">
+                <a href="#" @click="logout">Logout</a>
                 </li>
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
+                    Admin
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><RouterLink class="dropdown-item" :to="{name: 'userDetail'}">UserInfo</RouterLink></li>
+                    <li><RouterLink class="dropdown-item" :to="{name: 'userAdmin'}">Admin</RouterLink></li>
+                    <li><RouterLink class="dropdown-item" to="/upload">FileUpload</RouterLink></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
@@ -43,6 +53,14 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import '@/assets/styles/main.scss'
+
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore();
+
+const logout = function () { 
+    userStore.logout()
+}
 </script>
 
 <style >
