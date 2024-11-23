@@ -12,6 +12,7 @@ export const useUserStore = defineStore('userStore', () => {
   const errorMessage = ref('')
   const passwordHint = ref('')
   const fortune = ref({})
+  const isLoggedIn = ref(false)
 
   const getUserList = function () {
     axios.get(`${REST_USER_API}/admin`, {
@@ -24,6 +25,7 @@ export const useUserStore = defineStore('userStore', () => {
       })
       .catch((error) => {
         console.log(error)
+        alert('관리자만 접근 가능합니다')
         router.push({ name: 'home' })
       })
   }
@@ -73,6 +75,10 @@ export const useUserStore = defineStore('userStore', () => {
       })
   }
 
+  const checkLoginState = () => {
+    isLoggedIn.value = !!sessionStorage.getItem('access-token')
+  };
+
   const login = function (loginRequestForm) {
 
     sessionStorage.removeItem('access-token');
@@ -83,6 +89,7 @@ export const useUserStore = defineStore('userStore', () => {
           errorMessage.value = ''
           alert('WELCOME TO WhatsYouLook !!')
           sessionStorage.setItem('access-token', response.data['access-token']);
+          isLoggedIn.value = true
           router.push({ name: 'home' })
         } else {
           errorMessage.value = '아이디와 비밀번호를 확인해주세요'
@@ -100,6 +107,7 @@ export const useUserStore = defineStore('userStore', () => {
     sessionStorage.removeItem('access-token');
     console.log('로그아웃 완료');
     alert('로그아웃 성공')
+    isLoggedIn.value = false
     router.push({ name: 'home' })
   };
 
@@ -135,7 +143,7 @@ export const useUserStore = defineStore('userStore', () => {
   }
 
   return {
-    userList, loginUser, errorMessage, passwordHint, fortune,
-    getUserList, getUser, signup, modifyUser, login, logout, getPasswordHint, getFortune,
+    userList, loginUser, errorMessage, passwordHint, fortune, isLoggedIn,
+    getUserList, getUser, signup, modifyUser, checkLoginState, login, logout, getPasswordHint, getFortune,
   }
 })

@@ -1,7 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">로고</a>
+            <RouterLink class="navbar-brand" :to="{name: 'home'}">
+                <img src="@/assets/WhatsYouLookTXT.png" alt="로고" style="height: 45px;"/>
+            </RouterLink>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -14,27 +16,25 @@
                 <RouterLink class="nav-link " :to="{name: 'boardList'}">Board</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink class="nav-link " :to="{name: 'todayFortune'}">TodayFortune</RouterLink>
+                <RouterLink class="nav-link" :to="{name: 'userRegister'}" v-if="!userStore.isLoggedIn">SignUp</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink :to="{name: 'userRegister'}">SignUp</RouterLink>
+                <RouterLink class="nav-link" :to="{name: 'userLogin'}" v-if="!userStore.isLoggedIn">Login</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink :to="{name: 'userLogin'}">Login</RouterLink>
-                </li>
-                <li class="nav-item">
-                <a href="#" @click="logout">Logout</a>
+                <a href="#" class="nav-link" @click="logout" v-if="userStore.isLoggedIn">Logout</a>
                 </li>
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Admin
+                <a class="nav-link dropdown-toggle" @click.prevent="handleDropdownClick" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    UserOnly
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" v-if="userStore.isLoggedIn">
+                    <li><RouterLink class="dropdown-item" :to="{name: 'todayFortune'}">TodayFortune</RouterLink></li>
                     <li><RouterLink class="dropdown-item" :to="{name: 'userDetail'}">UserInfo</RouterLink></li>
                     <li><RouterLink class="dropdown-item" :to="{name: 'userAdmin'}">Admin</RouterLink></li>
-                    <li><RouterLink class="dropdown-item" to="/upload">FileUpload</RouterLink></li>
+                    <!-- 일단은 열어둡니다.. 관리자만 접근 가능하게 만들려면 백엔드에서 accountId 확인 로직이 필요함.. -->
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><RouterLink class="dropdown-item" to="/upload">FileUpload</RouterLink></li>
                 </ul>
                 </li>
                 <!-- <li class="nav-item">
@@ -51,6 +51,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router';
 import '@/assets/styles/main.scss'
 
@@ -61,6 +62,16 @@ const userStore = useUserStore();
 const logout = function () { 
     userStore.logout()
 }
+
+const handleDropdownClick = () => {
+  if (!userStore.isLoggedIn) {
+    alert('로그인이 필요합니다');
+  }
+};
+
+onMounted(() => {
+    userStore.checkLoginState()
+})
 </script>
 
 <style >
@@ -97,14 +108,17 @@ const logout = function () {
 }
 
 .navbar a {
-    color: #ffffff; /* 링크 텍스트 색상 설정 */
+    color: #2c2c2c; /* 텍스트 색상을 어두운 회색으로 변경 (수정) */
     text-decoration: none; /* 밑줄 제거 */
     padding: 0.5rem 1rem;
-    transition: color 0.3s ease; /* 텍스트 색상이 부드럽게 변하도록 설정 */
+    font-size: 1.3rem; /* 글자 크기 증가 (수정) */
+    font-weight: bold; /* 볼드체로 설정 (수정) */
+    transition: color 0.3s ease, transform 0.3s ease; /* 텍스트 색상이 부드럽게 변하도록 설정 */
 }
 
 .navbar a:hover {
-    color: #ffd700; /* 링크에 호버 시 색상 변경 */
+    color: #9a840a; /* 링크에 호버 시 색상 변경 */
+    transform: scale(1.05); /* 살짝 확대 효과 */
 }
 
 @media (max-width: 768px) {
