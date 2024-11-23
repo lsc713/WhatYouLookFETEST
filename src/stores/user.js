@@ -13,6 +13,7 @@ export const useUserStore = defineStore('userStore', () => {
   const passwordHint = ref('')
   const fortune = ref({})
   const isLoggedIn = ref(false)
+  const isAdmin = ref(false)
 
   const getUserList = function () {
     axios.get(`${REST_USER_API}/admin`, {
@@ -77,11 +78,14 @@ export const useUserStore = defineStore('userStore', () => {
 
   const checkLoginState = () => {
     isLoggedIn.value = !!sessionStorage.getItem('access-token')
+    const isAdminStored = sessionStorage.getItem('is-admin');
+    isAdmin.value = isAdminStored === 'true';
   };
 
   const login = function (loginRequestForm) {
 
     sessionStorage.removeItem('access-token');
+    sessionStorage.removeItem('is-admin');
 
     axios.post(`${REST_USER_API}/login`, loginRequestForm)
       .then((response) => {
@@ -90,6 +94,12 @@ export const useUserStore = defineStore('userStore', () => {
           alert('WELCOME TO WhatsYouLook !!')
           sessionStorage.setItem('access-token', response.data['access-token']);
           isLoggedIn.value = true
+          if (loginRequestForm.accountId === 'admin') {
+            isAdmin.value = true;
+            sessionStorage.setItem('is-admin', 'true')
+          } else {
+            sessionStorage.setItem('is-admin', 'false')
+          }
           router.push({ name: 'home' })
         } else {
           errorMessage.value = '아이디와 비밀번호를 확인해주세요'
@@ -104,10 +114,12 @@ export const useUserStore = defineStore('userStore', () => {
   }
 
   const logout = function () {
-    sessionStorage.removeItem('access-token');
+    sessionStorage.removeItem('access-token')
+    sessionStorage.removeItem('is-admin')
     console.log('로그아웃 완료');
     alert('로그아웃 성공')
     isLoggedIn.value = false
+    isAdmin.value = false
     router.push({ name: 'home' })
   };
 
@@ -143,7 +155,7 @@ export const useUserStore = defineStore('userStore', () => {
   }
 
   return {
-    userList, loginUser, errorMessage, passwordHint, fortune, isLoggedIn,
+    userList, loginUser, errorMessage, passwordHint, fortune, isLoggedIn, isAdmin,
     getUserList, getUser, signup, modifyUser, checkLoginState, login, logout, getPasswordHint, getFortune,
   }
 })

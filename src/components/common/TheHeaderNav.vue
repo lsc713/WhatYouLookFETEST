@@ -31,10 +31,9 @@
                 <ul class="dropdown-menu" v-if="userStore.isLoggedIn">
                     <li><RouterLink class="dropdown-item" :to="{name: 'todayFortune'}">TodayFortune</RouterLink></li>
                     <li><RouterLink class="dropdown-item" :to="{name: 'userDetail'}">UserInfo</RouterLink></li>
-                    <li><RouterLink class="dropdown-item" :to="{name: 'userAdmin'}">Admin</RouterLink></li>
-                    <!-- 일단은 열어둡니다.. 관리자만 접근 가능하게 만들려면 백엔드에서 accountId 확인 로직이 필요함.. -->
-                    <li><hr class="dropdown-divider"></li>
-                    <li><RouterLink class="dropdown-item" to="/upload">FileUpload</RouterLink></li>
+                    <li><hr class="dropdown-divider" v-if="userStore.isAdmin"></li>
+                    <li><RouterLink class="dropdown-item" :to="{name: 'userAdmin'}" v-if="userStore.isAdmin">Admin</RouterLink></li>
+                    <li><RouterLink class="dropdown-item" to="/upload" v-if="userStore.isAdmin">FileUpload</RouterLink></li>
                 </ul>
                 </li>
                 <!-- <li class="nav-item">
