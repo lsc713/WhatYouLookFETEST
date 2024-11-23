@@ -32,24 +32,25 @@ export const useBoardImageStore = defineStore('boardImageStore', () => {
       })
   }
 
-  const uploadBoardImage = function (boardId, images) {
-    const formData = new FormData()
+const uploadBoardImage = async function (boardId, images) {
+  const formData = new FormData();
+  
+  Array.from(images).forEach((image) => formData.append('files', image));
 
-    Array.from(images).forEach((image) => formData.append('files', image))
-
-    axios.post(`${REST_BOARD_API}/${boardId}/images`, formData, {
+  try {
+    const response = await axios.post(`${REST_BOARD_API}/${boardId}/images`, formData, {
       headers: {
         'access-token': sessionStorage.getItem('access-token'),
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-      .then(() => {
-        console.log('이미지 업로드 성공')
-      })
-      .catch((error) => {
-        console.log('이미지 업로드 실패', error)
-      })
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log('이미지 업로드 성공');
+    return response.data;
+  } catch (error) {
+    console.error('이미지 업로드 실패', error);
+    throw error;
   }
+};
 
   const removeBoardImage = function (boardId, imageId) {
     axios.delete(`${REST_BOARD_API}/${boardId}/images/${imageId}`, {
@@ -60,7 +61,6 @@ export const useBoardImageStore = defineStore('boardImageStore', () => {
       .then(() => {
         alert('이미지가 삭제 되었습니다')
         getBoardImageList(boardId)
-        router.push(`/board/${boardId}`)
       })
       .catch((error) => {
         console.log(error)

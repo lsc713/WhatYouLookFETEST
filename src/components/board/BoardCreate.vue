@@ -1,11 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useBoardStore } from '@/stores/board'
 import { useBoardImageStore } from '@/stores/boardImage'
 import BoardImageUploader from '@/components/board/BoardImageUploader.vue';
 
-const route = useRoute();
 const router = useRouter()
 const boardStore = useBoardStore()
 const boardImageStore = useBoardImageStore()
@@ -19,10 +18,18 @@ const images = ref([])
 
 const createBoard = async function () {
     try {
-        await boardStore.createBoard(board.value)
+        const createdBoard = await boardStore.createBoard(board.value)
+        const boardId = createdBoard.id
+        if (!boardId) {
+            throw new Error('게시판 ID가 존재하지 않습니다.');
+        }
+
+        console.log(boardId)
 
         if (images.value.length > 0) {
-            await boardImageStore.uploadBoardImage(boardId, images.value)
+            console.log('이미지 업로드 시작');
+            await boardImageStore.uploadBoardImage(boardId, images.value);
+            console.log('이미지 업로드 성공');
         }
 
         router.push(`/board/${boardId}`)

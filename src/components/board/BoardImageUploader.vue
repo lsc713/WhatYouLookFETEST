@@ -31,17 +31,11 @@ const handleFileChange = (event) => {
     />
     <div v-if="props.images.length" class="mt-3">
       <h5>선택된 이미지</h5>
-      <div class="d-flex flex-wrap">
-        <div
-            v-for="(image, index) in props.images"
-            :key="index" class="m-2">
-            <img
-                :src="URL.createObjectURL(image)"
-                class="img-thumbnail"
-                style="width: 100px; height: 100px;"
-            />
-        </div>
-      </div>
+      <ul>
+        <li v-for="(image, index) in props.images" :key="index">
+          {{ image.name }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>

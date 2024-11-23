@@ -60,35 +60,33 @@ export const useBoardStore = defineStore('boardStore', () => {
       })
   }
 
-  const createBoard = function (board) {
-    axios.post(REST_BOARD_API, board, {
+const createBoard = async function (board) {
+  try {
+    const response = await axios.post(REST_BOARD_API, board, {
       headers: {
-        'access-token': sessionStorage.getItem('access-token')
-      }
-    })
-      .then(response => {
-        console.log('업로드 성공')
-        return response.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+        'access-token': sessionStorage.getItem('access-token'),
+      },
+    });
+    console.log('업로드 성공', response);
+    return response.data;
+  } catch (error) {
+    console.error('게시글 업로드 실패:', error);
+    throw error;
   }
+};
 
-  const modifyBoard = function (boardId) {
-    axios.put(`${REST_BOARD_API}/${boardId}`, board.value, {
-      headers: {
-        'access-token': sessionStorage.getItem('access-token')
-      }
-    })
-      .then(() => {
-        router.push(`/board/${boardId}`)
-      })
-      .catch((error) => {
-        console.log(error)
-        router.push(`/board/${boardId}`)
-      })
-  }
+  const modifyBoard = async function (boardId) {
+    try {
+      await axios.put(`${REST_BOARD_API}/${boardId}`, board.value, {
+        headers: {
+          'access-token': sessionStorage.getItem('access-token')
+        }
+      });
+    } catch (error) {
+      console.error('게시글 수정 실패', error);
+      throw error;
+    }
+  };
 
   const removeBoard = function (boardId) {
     axios.delete(`${REST_BOARD_API}/${boardId}`, {
