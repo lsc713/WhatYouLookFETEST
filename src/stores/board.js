@@ -9,30 +9,45 @@ export const useBoardStore = defineStore('boardStore', () => {
 
   const boardList = ref([])
   const board = ref({})
+  const isSearching = ref(false)
+  const searchCondition = ref({
+    key: "content",     // 일단 content 검색으로 고정
+    word: "",
+    orderBy: "none",    // 사용 X
+    orderByDir: "asc",  // 사용 X
+})
 
   const getBoardList = function () {
+    if (isSearching.value) return
+
     axios.get(REST_BOARD_API)
       .then((response) => {
         boardList.value = response.data
       })
       .catch((error) => {
         console.log(error)
-        router.push({ name: 'home' })
       })
   }
 
-  const searchBoard = function (searchInfo) {
+  const searchBoard = function () {
+    isSearching.value = true
+
     axios.get(`${REST_BOARD_API}/search`, {
-      params: searchInfo
+      params: searchCondition.value
     })
       .then((response) => {
         boardList.value = response.data
       })
       .catch((error) => {
         console.log(error)
-        router.push({ name: 'boardList' })
       })
   }
+
+  const resetSearch = function () {
+    isSearching.value = false;
+    searchCondition.value.word = "";
+    getBoardList();
+  };
 
   const getBoard = function (boardId) {
     axios.get(`${REST_BOARD_API}/${boardId}`)
@@ -93,7 +108,7 @@ export const useBoardStore = defineStore('boardStore', () => {
   }
 
   return {
-    boardList, board,
-    getBoardList, searchBoard, getBoard, createBoard, modifyBoard, removeBoard,
+    boardList, board, searchCondition, isSearching,
+    getBoardList, searchBoard, resetSearch, getBoard, createBoard, modifyBoard, removeBoard,
   }
 })

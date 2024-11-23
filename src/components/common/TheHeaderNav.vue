@@ -13,7 +13,7 @@
                 <RouterLink class="nav-link " aria-current="page" to="/">Weather</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink class="nav-link " :to="{name: 'boardList'}">Board</RouterLink>
+                <RouterLink class="nav-link " :to="{name: 'boardList'}" @click.prevent="resetSearch">Board</RouterLink>
                 </li>
                 <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'userRegister'}" v-if="!userStore.isLoggedIn">SignUp</RouterLink>
@@ -41,8 +41,8 @@
                 </li> -->
             </ul>
             <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-info" type="submit">Search</button>
+                <input v-model="boardStore.searchCondition.word" class="form-control me-2" type="search" placeholder="검색 내용을 입력하세요" aria-label="Search">
+                <button class="btn btn-outline-info" @click.prevent="searchBoard">Search</button>
             </form>
             </div>
         </div>
@@ -51,12 +51,16 @@
 
 <script setup>
 import { onMounted } from 'vue'
+import { useRouter } from "vue-router";
 import { RouterLink } from 'vue-router';
 import '@/assets/styles/main.scss'
 
 import { useUserStore } from '@/stores/user'
+import { useBoardStore } from "@/stores/board";
 
+const router = useRouter();
 const userStore = useUserStore();
+const boardStore = useBoardStore();
 
 const logout = function () { 
     userStore.logout()
@@ -66,6 +70,19 @@ const handleDropdownClick = () => {
   if (!userStore.isLoggedIn) {
     alert('로그인이 필요합니다');
   }
+};
+
+const resetSearch = function () {
+    boardStore.resetSearch()
+}
+
+const searchBoard = function () {
+  if (boardStore.searchCondition.word.trim() === "") {
+    alert("검색어를 입력하세요.");
+    return;
+  }
+  boardStore.searchBoard()
+  router.push({ name: "boardList" })
 };
 
 onMounted(() => {
