@@ -10,7 +10,7 @@ const boardImageStore = useBoardImageStore()
 
 const colsPerRow = ref(4)
 const currentPage = ref(1)
-const perPage = 12
+const perPage = 8
 const pageCount = computed(() => {
     return Math.ceil(boardStore.boardList.length / perPage)
 })
@@ -22,17 +22,15 @@ const currentPageBoardList = computed(() => {
 })
 
 const emptySlots = computed(() => {
-  const totalCards = colsPerRow.value * 3; // 항상 4x3 (12개) 기준으로 계산
+  const totalCards = colsPerRow.value * 2; // 항상 4x2 (8개) 기준으로 계산
   return totalCards - currentPageBoardList.value.length;
 });
 
 const updateColsPerRow = () => {
   if (window.innerWidth >= 992) {
-    colsPerRow.value = 4;  // 가장 큰 화면에서는 4개
-  } else if (window.innerWidth >= 768) {
-    colsPerRow.value = 3;  // 중간 화면에서는 3개
+    colsPerRow.value = 4;  // 가장 큰 화면에서는 4개 (4x2)
   } else {
-    colsPerRow.value = 2;  // 작은 화면에서는 2개
+    colsPerRow.value = 2;  // 작은 화면에서는 2개 (2x4)
   }
 };
 
@@ -70,7 +68,7 @@ onBeforeUnmount(() => {
     <div v-if="!currentPageBoardList.length">
       <p class="text-center fw-bold fs-5">검색 결과가 없습니다.</p>
     </div>
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <div class="row row-cols-2 row-cols-lg-4 g-4">
       <div class="col" v-for="board in currentPageBoardList" :key="board.id">
         <div class="card h-100">
           <RouterLink :to="`/board/${board.id}`">
@@ -202,7 +200,6 @@ onBeforeUnmount(() => {
 }
 
 .row-cols-2 > .col,
-.row-cols-md-3 > .col,
 .row-cols-lg-4 > .col {
   margin-bottom: 20px;
 }
