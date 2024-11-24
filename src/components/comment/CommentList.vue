@@ -74,7 +74,13 @@ onMounted(() => {
               />
             </template>
           </td>
-          <td>{{ comment.userName }}</td>
+          <td>
+            <!-- 이미지와 작성자 이름 함께 표시 -->
+            <div class="d-flex align-items-center justify-content-center">
+              <img :src="comment.userFilePath" alt="User's Profile" class="author-image" />
+              <span>{{ comment.userName }}</span>
+            </div>
+          </td>
           <td>{{ comment.createdAt }}</td>
           <td>
             <template v-if="editingCommentId !== comment.id">
@@ -125,5 +131,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.author-image {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%; /* 원형 이미지 */
+  margin-right: 10px; /* 이미지와 텍스트 간의 간격 */
+}
 
 </style>

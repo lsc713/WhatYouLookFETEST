@@ -23,6 +23,7 @@ export const useBoardStore = defineStore('boardStore', () => {
     axios.get(REST_BOARD_API)
       .then((response) => {
         boardList.value = response.data
+        console.log(response.data)
       })
       .catch((error) => {
         console.log(error)
@@ -37,6 +38,7 @@ export const useBoardStore = defineStore('boardStore', () => {
     })
       .then((response) => {
         boardList.value = response.data
+        console.log(response.data)
       })
       .catch((error) => {
         console.log(error)

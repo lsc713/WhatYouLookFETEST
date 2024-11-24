@@ -50,13 +50,10 @@ onMounted(() => {
                         <h4 class="card-title">{{ boardStore.board.title }}
                             <span class="badge bg-danger">{{ boardStore.board.viewCnt }}</span>
                         </h4>
-                        <div class="d-flex justify-content-end">
-                            <h6 class="card-subtitle mx-3 text-body-secondary">
-                                {{ boardStore.board.userName }}
-                            </h6>
-                            <h6 class="card-subtitle text-body-secondary">
-                                {{ boardStore.board.createdAt }}
-                            </h6>
+                        <div class="d-flex justify-content-end author-info">
+                        <img :src="boardStore.board.userFilePath" alt="User's Profile" class="author-image" />
+                        <h6 class="card-subtitle mx-3 text-body-secondary">{{ boardStore.board.userName }}</h6>
+                        <h6 class="card-subtitle text-body-secondary">{{ boardStore.board.createdAt }}</h6>
                         </div>
                     </div>
 
@@ -146,6 +143,25 @@ onMounted(() => {
 .card-text {
   font-size: 1rem;
   line-height: 1.5;
+}
+
+.author-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.author-image {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%; /* 원형 이미지 */
+  margin-right: 10px; /* 이미지와 텍스트 간의 간격 */
+}
+
+.author-info .card-subtitle {
+  color: #6c757d; /* text-muted와 같은 색 */
+  margin-left: 10px; /* 텍스트 간의 간격 */
 }
 
 .comment-section {

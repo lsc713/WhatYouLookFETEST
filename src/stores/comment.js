@@ -14,6 +14,7 @@ export const useCommentStore = defineStore('commentStore', () => {
     axios.get(`${REST_BOARD_API}/${boardId}/comments`)
       .then((response) => {
         commentList.value = response.data
+        console.log(response.data)
       })
       .catch((error) => {
         console.log(error)

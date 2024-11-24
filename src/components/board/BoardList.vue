@@ -101,9 +101,12 @@ onBeforeUnmount(() => {
               </div>
             </div>
             <hr />
-            <div class="text-muted text-end">
-              작성자: {{ board.userName }} <br />
-              등록일: {{ board.createdAt }}
+            <div class="d-flex align-items-center text-muted text-end author-info">
+              <img :src="board.userFilePath" alt="User's Profile" class="author-image" />
+              <div>
+                작성자: {{ board.userName }} <br />
+                등록일: {{ board.createdAt }}
+              </div>
             </div>
           </div>
         </div>
@@ -195,6 +198,21 @@ onBeforeUnmount(() => {
 
 .card-body {
   min-height: 150px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #6c757d; /* text-muted와 같은 색 */
+}
+
+.author-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%; /* 원형 이미지 */
+  margin-right: 10px;
 }
 
 .view-count {
