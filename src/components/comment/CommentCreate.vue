@@ -38,13 +38,8 @@ onMounted(() => {
         v-model="commentContent" 
         placeholder="댓글을 작성하세요..." 
         class="form-control"
+        @keyup.enter="addComment"
       ></textarea>
-      <button 
-        @click="addComment" 
-        class="btn btn-primary mt-3"
-      >
-        댓글 추가
-      </button>
     </div>
 
     <div v-else>

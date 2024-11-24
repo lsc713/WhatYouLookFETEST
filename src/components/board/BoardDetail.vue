@@ -127,7 +127,7 @@ onMounted(() => {
             </div>
         </div>
 
-        <div class="comment-section">
+        <div class="comment-section" style="margin-top: 10px;">
             <CommentList :boardId="boardId" @commentAdded="handleAddComment" />
             <CommentCreate :boardId="boardId" @commentAdded="handleAddComment"/>
         </div>
