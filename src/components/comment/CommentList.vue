@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
 import { useCommentStore } from '@/stores/comment'
 
 const props = defineProps({
@@ -14,6 +15,7 @@ const editedContent = ref({
     content: '',
 })
 
+const userStore = useUserStore();
 const commentStore = useCommentStore()
 
 const removeComment = function (commentId) {
@@ -35,7 +37,12 @@ const startEditing = function (commentId, content) {
   editedContent.value.content = content
 }
 
+const showLoginAlert = function () {
+  alert('로그인이 필요합니다')
+}
+
 onMounted(() => {
+    userStore.checkLoginState()
     commentStore.getCommentList(props.boardId)
 })
 
@@ -73,7 +80,15 @@ onMounted(() => {
             <template v-if="editingCommentId !== comment.id">
               <button 
                 class="mx-3 btn btn-outline-warning" 
-                @click="startEditing(comment.id, comment.content)"
+                @click="startEditing(comment.id, comment.content)" 
+                v-if="userStore.isLoggedIn"
+              >
+                수정
+              </button>
+              <button 
+                class="mx-3 btn btn-outline-warning" 
+                @click="showLoginAlert" 
+                v-else
               >
                 수정
               </button>
@@ -90,7 +105,15 @@ onMounted(() => {
           <td>
             <button 
               class="mx-3 btn btn-outline-danger" 
-              @click="removeComment(comment.id)"
+              @click="removeComment(comment.id)" 
+              v-if="userStore.isLoggedIn"
+            >
+              X
+            </button>
+            <button 
+              class="mx-3 btn btn-outline-danger" 
+              @click="showLoginAlert" 
+              v-else
             >
               X
             </button>

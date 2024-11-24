@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { onMounted } from "vue";
+import { useUserStore } from '@/stores/user'
 import { useBoardStore } from "@/stores/board";
 import { useCommentStore } from '@/stores/comment'
 import { useBoardImageStore } from '@/stores/boardImage'
@@ -9,6 +10,7 @@ import CommentCreate from '@/components/comment/CommentCreate.vue'
 
 const route = useRoute();
 const router = useRouter();
+const userStore = useUserStore();
 const boardStore = useBoardStore();
 const boardImageStore = useBoardImageStore()
 const commentStore = useCommentStore()
@@ -27,7 +29,12 @@ const handleAddComment = function () {
   commentStore.getCommentList(boardId)
 }
 
+const showLoginAlert = function () {
+  alert('로그인이 필요합니다')
+}
+
 onMounted(() => {
+    userStore.checkLoginState()
     boardStore.getBoard(boardId)
     boardImageStore.getBoardImageList(boardId)
     commentStore.getCommentList(boardId)
@@ -67,8 +74,35 @@ onMounted(() => {
                         {{ boardStore.board.content }}
                     </p>
                     <div class="d-flex justify-content-center">
-                        <button class="mx-3 btn btn-outline-success" @click="modifyBoard">수정</button>
-                        <button class="mx-3 btn btn-outline-danger" @click="removeBoard">삭제</button>
+                    <button 
+                        class="mx-3 btn btn-outline-success" 
+                        @click="modifyBoard" 
+                        v-if="userStore.isLoggedIn"
+                    >
+                        수정
+                    </button>
+                    <button 
+                        class="mx-3 btn btn-outline-success" 
+                        @click="showLoginAlert" 
+                        v-else
+                    >
+                        수정
+                    </button>
+
+                    <button 
+                        class="mx-3 btn btn-outline-danger" 
+                        @click="removeBoard" 
+                        v-if="userStore.isLoggedIn"
+                    >
+                        삭제
+                    </button>
+                    <button 
+                        class="mx-3 btn btn-outline-danger" 
+                        @click="showLoginAlert" 
+                        v-else
+                    >
+                        삭제
+                    </button>
                     </div>
                 </div>
             </div>

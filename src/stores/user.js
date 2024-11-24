@@ -94,13 +94,15 @@ export const useUserStore = defineStore('userStore', () => {
           alert('WELCOME TO WhatsYouLook !!')
           sessionStorage.setItem('access-token', response.data['access-token']);
           isLoggedIn.value = true
+
           if (loginRequestForm.accountId === 'admin') {
             isAdmin.value = true;
             sessionStorage.setItem('is-admin', 'true')
           } else {
             sessionStorage.setItem('is-admin', 'false')
           }
-          router.push({ name: 'home' })
+          // router.push({ name: 'home' })
+          router.go(-1);
         } else {
           errorMessage.value = '아이디와 비밀번호를 확인해주세요'
           console.error('액세스 토큰 없음');

@@ -1,10 +1,12 @@
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from "vue-router";
+import { useUserStore } from '@/stores/user'
 import { useBoardStore } from '@/stores/board'
 import { useBoardImageStore } from '@/stores/boardImage'
 
 const router = useRouter();
+const userStore = useUserStore();
 const boardStore = useBoardStore()
 const boardImageStore = useBoardImageStore()
 
@@ -47,6 +49,10 @@ watch(() => boardImageStore.boardImageThumbList, (newList) => {
 const createBoard = function () {
     router.push({ name: "boardCreate" });
 };
+
+const showLoginAlert = function () {
+  alert('로그인이 필요합니다')
+}
 
 onMounted(() => {
     updateColsPerRow(); // 초기 설정
@@ -136,7 +142,20 @@ onBeforeUnmount(() => {
         </li>
       </ul>
       <div class="text-center mt-3">
-        <button class="btn btn-outline-success" @click="createBoard">등록</button>
+        <button 
+          class="btn btn-outline-success" 
+          @click="createBoard" 
+          v-if="userStore.isLoggedIn"
+        >
+          등록
+        </button>
+        <button 
+          class="btn btn-outline-success" 
+          @click="showLoginAlert" 
+          v-else
+        >
+          등록
+        </button>
       </div>
     </nav>
   </div>

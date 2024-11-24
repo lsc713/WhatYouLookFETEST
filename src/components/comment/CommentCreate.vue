@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
 import { useCommentStore } from '@/stores/comment'
 
 const props = defineProps({
@@ -12,6 +13,8 @@ const props = defineProps({
 const emit = defineEmits()
 
 const commentContent = ref('')
+
+const userStore = useUserStore();
 const commentStore = useCommentStore()
 
 const addComment = function () {
@@ -22,12 +25,35 @@ const addComment = function () {
   window.location.reload()
 }
 
+onMounted(() => {
+    userStore.checkLoginState()
+})
+
 </script>
 
 <template>
   <div class="comment-create">
-    <textarea v-model="commentContent" placeholder="댓글을 작성하세요..." class="form-control"></textarea>
-    <button @click="addComment" class="btn btn-primary mt-3">댓글 추가</button>
+    <div v-if="userStore.isLoggedIn">
+      <textarea 
+        v-model="commentContent" 
+        placeholder="댓글을 작성하세요..." 
+        class="form-control"
+      ></textarea>
+      <button 
+        @click="addComment" 
+        class="btn btn-primary mt-3"
+      >
+        댓글 추가
+      </button>
+    </div>
+
+    <div v-else>
+      <textarea 
+        placeholder="로그인이 필요합니다." 
+        class="form-control" 
+        disabled
+      ></textarea>
+    </div>
   </div>
 </template>
 
