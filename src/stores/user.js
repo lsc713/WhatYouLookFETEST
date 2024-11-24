@@ -59,22 +59,22 @@ export const useUserStore = defineStore('userStore', () => {
       })
   }
 
-  const modifyUser = function () {
-    axios.put(`${REST_USER_API}/info`, loginUser.value, {
+const modifyUser = async function () {
+  try {
+    await axios.put(`${REST_USER_API}/info`, loginUser.value, {
       headers: {
         'access-token': sessionStorage.getItem('access-token')
       }
-    })
-      .then(() => {
-        errorMessage.value = ''
-        router.push({ name: 'userDetail' })
-      })
-      .catch((error) => {
-        console.log(error)
-        errorMessage.value = '중복된 아이디 닉네임입니다'
-        router.push({ name: 'userUpdate' })
-      })
+    });
+    
+    errorMessage.value = '';
+    router.push({ name: 'userDetail' });
+  } catch (error) {
+    console.log(error);
+    errorMessage.value = '중복된 아이디 닉네임입니다';
+    router.push({ name: 'userUpdate' });
   }
+}
 
   const checkLoginState = () => {
     isLoggedIn.value = !!sessionStorage.getItem('access-token')
@@ -101,8 +101,8 @@ export const useUserStore = defineStore('userStore', () => {
           } else {
             sessionStorage.setItem('is-admin', 'false')
           }
-          // router.push({ name: 'home' })
-          router.go(-1);
+          router.push({ name: 'home' })
+          // router.go(-1);
         } else {
           errorMessage.value = '아이디와 비밀번호를 확인해주세요'
           console.error('액세스 토큰 없음');

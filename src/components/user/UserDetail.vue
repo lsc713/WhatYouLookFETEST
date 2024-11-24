@@ -27,6 +27,19 @@ onMounted(() => {
                 <div class="card-body">
                     <div class="mb-4">
                         <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-center align-items-center">
+                                <img
+                                  v-if="userStore.loginUser.filePath"
+                                  :src="userStore.loginUser.filePath"
+                                  alt="Profile Image"
+                                  class="img-thumbnail mb-3"
+                                  style="max-width: 150px; height: auto;"
+                                />
+                                <img
+                                    src="@/assets/no-image-500.png"
+                                    v-else
+                                />
+                            </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span>아이디</span>
                                 <strong>{{ userStore.loginUser.accountId }}</strong>

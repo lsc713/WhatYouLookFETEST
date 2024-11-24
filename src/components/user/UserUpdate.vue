@@ -1,17 +1,39 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user'
+import UserProfileUploader from '@/components/user/UserProfileUploader.vue'
+import { useProfileImageStore } from '@/stores/profileImage';
 
-const userStore = useUserStore();
 const router = useRouter()
+const userStore = useUserStore();
+const profileUploader = useProfileImageStore();
 
-const modifyUser = function () { 
-    userStore.modifyUser()
+const image = ref(null)
+const fileInput = ref(null)
+
+const modifyUser = async function () {
+  try {
+    if (image.value) {
+      await profileUploader.updateProfileImage(image.value)
+      alert('프로필 이미지 업로드 성공')
+    }
+
+    await userStore.modifyUser(userStore.loginUser)
+  } catch (error) {
+    console.error('회원 수정 또는 이미지 업로드 실패', error)
+    alert('회원 수정에 실패했습니다.')
+  }
 }
 
 const backButton = function () {
     router.go(-1);
+}
+
+const handleImageClick = () => {
+  if (fileInput.value) {
+    fileInput.value.click()
+  }
 }
 
 onMounted(() => {
@@ -46,6 +68,15 @@ onMounted(() => {
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="birthDate" placeholder="생년월일" v-model="userStore.loginUser.birthDate">
                         <label for="birthDate">생년월일</label>
+                    </div>
+                    <div class="mb-3">
+                        <img
+                        :src="userStore.loginUser.filePath"
+                        class="img-thumbnail mb-3"
+                        alt="프로필 이미지"
+                        @click="handleImageClick"
+                        />
+                        <UserProfileUploader :image="image" @update:image="image = $event" />
                     </div>
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-primary w-100">수정</button>
