@@ -16,9 +16,6 @@
                 <RouterLink class="nav-link " :to="{name: 'boardList'}" @click.prevent="resetSearch">Board</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink class="nav-link" :to="{name: 'userRegister'}" v-if="!userStore.isLoggedIn">SignUp</RouterLink>
-                </li>
-                <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'userLogin'}" v-if="!userStore.isLoggedIn">Login</RouterLink>
                 </li>
                 <li class="nav-item">
@@ -32,7 +29,7 @@
                     <li><RouterLink class="dropdown-item" :to="{name: 'todayFortune'}">TodayFortune</RouterLink></li>
                     <li><RouterLink class="dropdown-item" :to="{name: 'userDetail'}">UserInfo</RouterLink></li>
                     <li><hr class="dropdown-divider" v-if="userStore.isAdmin"></li>
-                    <li><RouterLink class="dropdown-item" :to="{name: 'userAdmin'}" v-if="userStore.isAdmin">Admin</RouterLink></li>
+                    <!-- <li><RouterLink class="dropdown-item" :to="{name: 'userAdmin'}" v-if="userStore.isAdmin">Admin</RouterLink></li> -->
                     <li><RouterLink class="dropdown-item" to="/upload" v-if="userStore.isAdmin">FileUpload</RouterLink></li>
                 </ul>
                 </li>
@@ -40,9 +37,9 @@
                 <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li> -->
             </ul>
-            <form class="d-flex" role="search">
-                <input v-model="boardStore.searchCondition.word" class="form-control me-2" type="search" placeholder="검색 내용을 입력하세요" aria-label="Search">
-                <button class="btn btn-outline-info" @click.prevent="searchBoard">Search</button>
+            <form class="d-flex align-items-center" role="search">
+                <input v-model="boardStore.searchCondition.word" class="form-control me-2 search-input" type="search" placeholder="Search" aria-label="Search">
+                <img src="@/assets/search-btn.png" alt="검색 버튼" @click.prevent="searchBoard" class="search-btn"/>
             </form>
             </div>
         </div>
@@ -135,6 +132,19 @@ onMounted(() => {
 .navbar a:hover {
     color: #9a840a; /* 링크에 호버 시 색상 변경 */
     transform: scale(1.05); /* 살짝 확대 효과 */
+}
+
+.search-input {
+  width: 200px; /* 검색창 크기 지정 */
+  height: 40px; /* 높이 일치 */
+  padding: 0.5rem; /* 내부 여백 */
+}
+
+.search-btn {
+  cursor: pointer;
+  width: 40px; /* 버튼 크기 조정 */
+  height: 40px; /* 버튼 크기 조정 */
+  margin-left: 8px; /* 버튼과 입력창 간의 간격 추가 */
 }
 
 @media (max-width: 768px) {

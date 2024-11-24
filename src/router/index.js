@@ -14,6 +14,7 @@ import UserUpdate from '@/components/user/UserUpdate.vue'
 import UserAdmin from '@/components/user/UserAdmin.vue'
 import UserLogin from '@/components/user/UserLogin.vue'
 import UserRegister from '@/components/user/UserRegister.vue'
+import UserPasswordFinder from '@/components/user/UserPasswordFinder.vue'
 
 import BoardList from '@/components/board/BoardList.vue'
 import BoardDetail from '@/components/board/BoardDetail.vue'
@@ -79,6 +80,11 @@ const router = createRouter({
           path: 'register',
           name: 'userRegister',
           component: UserRegister,
+        },
+        {
+          path: 'passwordFinder',
+          name: 'userPasswordFinder',
+          component: UserPasswordFinder,
         },
       ]
     },
