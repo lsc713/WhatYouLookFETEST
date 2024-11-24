@@ -19,7 +19,8 @@ const images = ref([])
 
 const createBoard = async function () {
     try {
-        await boardStore.createBoard(board.value)
+        const createdBoard = await boardStore.createBoard(board.value)
+        const boardId = createdBoard.id;
 
         if (images.value.length > 0) {
             await boardImageStore.uploadBoardImage(boardId, images.value)
