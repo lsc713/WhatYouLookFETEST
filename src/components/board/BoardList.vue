@@ -54,6 +54,21 @@ const showLoginAlert = function () {
   alert('로그인이 필요합니다')
 }
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  
+  // 날짜 형식화 (YYYY.MM.DD)
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1
+  const day = date.getDate().toString().padStart(2, '0');
+
+  // 시간 형식화 (HH:mm)
+  const hours = date.getHours().toString().padStart(2, '0'); // 두 자리로 맞춤
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // 두 자리로 맞춤
+
+  return `${year}.${month}.${day} ${hours}:${minutes}`; // "YYYY.MM.DD HH:mm" 형식
+};
+
 onMounted(() => {
     updateColsPerRow(); // 초기 설정
     window.addEventListener('resize', updateColsPerRow); // 화면 크기 변경 대응
@@ -71,6 +86,23 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="container">
+    <div class="d-flex justify-content-end mt-3">
+      <img 
+        src="@/assets/edit-btn.png" 
+        alt="등록 버튼" 
+        @click="createBoard" 
+        v-if="userStore.isLoggedIn"
+        class="edit-btn"
+      />
+      <img 
+        src="@/assets/edit-btn.png" 
+        alt="등록 버튼" 
+        @click="showLoginAlert" 
+        v-else
+        class="edit-btn"
+      />
+    </div>
+
     <div v-if="!currentPageBoardList.length">
       <p class="text-center fw-bold fs-5">검색 결과가 없습니다.</p>
     </div>
@@ -96,16 +128,17 @@ onBeforeUnmount(() => {
               <RouterLink :to="`/board/${board.id}`" class="card-title-link">
                 <h5 class="card-title mb-0">{{ board.title }}</h5>
               </RouterLink>
-              <div class="view-count">
-                <span>{{ board.viewCnt }}</span>
-              </div>
             </div>
             <hr />
-            <div class="d-flex align-items-center text-muted text-end author-info">
+            <div class="d-flex align-items-center text-muted author-info">
               <img :src="board.userFilePath" alt="User's Profile" class="author-image" />
-              <div>
-                작성자: {{ board.userName }} <br />
-                등록일: {{ board.createdAt }}
+              <div class="author-details">
+                <div>{{ board.userName }}</div>
+                <div>{{ formatDate(board.createdAt) }}</div>
+                <div class="viewCnt">
+                  <img src="@/assets/eye-icon.png">
+                  <span>{{ board.viewCnt }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -144,22 +177,6 @@ onBeforeUnmount(() => {
           >
         </li>
       </ul>
-      <div class="text-center mt-3">
-        <button 
-          class="btn btn-outline-success" 
-          @click="createBoard" 
-          v-if="userStore.isLoggedIn"
-        >
-          등록
-        </button>
-        <button 
-          class="btn btn-outline-success" 
-          @click="showLoginAlert" 
-          v-else
-        >
-          등록
-        </button>
-      </div>
     </nav>
   </div>
 </template>
@@ -187,6 +204,10 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
 }
 
+.card-body {
+  min-height: 150px;
+}
+
 .card-title-link {
   text-decoration: none;
   color: inherit;
@@ -196,14 +217,32 @@ onBeforeUnmount(() => {
   color: #007bff;
 }
 
-.card-body {
-  min-height: 150px;
+/* .viewCnt 컨테이너 스타일 */
+.viewCnt {
+  display: flex; /* 이미지와 텍스트를 가로로 정렬 */
+  align-items: center; /* 이미지와 텍스트를 수직 가운데 정렬 */
+  margin-top : 5px;
+  gap: 2px; /* 이미지와 텍스트 사이 여백 */
+}
+
+/* 이미지 크기 조정 */
+.viewCnt img {
+  width: 20px; /* 이미지 가로 크기 */
+  height: 20px; /* 이미지 세로 크기 */
+  object-fit: contain; /* 이미지 비율 유지하며 크기 조정 */
+}
+
+/* 텍스트 스타일 */
+.viewCnt span {
+  font-weight: bold; /* 텍스트 굵게 */
+  font-size: 0.8rem; /* 텍스트 크기 (필요시 조정) */
+  color: #333; /* 텍스트 색상 (필요시 조정) */
 }
 
 .author-info {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-  text-align: right;
   color: #6c757d; /* text-muted와 같은 색 */
 }
 
@@ -212,20 +251,31 @@ onBeforeUnmount(() => {
   height: 40px;
   object-fit: cover;
   border-radius: 50%; /* 원형 이미지 */
-  margin-right: 10px;
 }
 
-.view-count {
-  display: inline-block;
-  background-color: #f0f0f0;
-  color: #555;
-  font-size: 0.875rem;
-  font-weight: bold;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
+.author-details {
+  margin-left: 10px; /* 이미지와 텍스트 간의 간격 */
+  text-align: left;
+}
+
+.pagination .page-item .page-link {
+  color: #08635d;
+  border: 1px solid #08635d; /* 버튼 테두리 색상 */
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: rgba(143, 255, 248, 0.6); /* 호버 시 배경색 */
+  color: #fff; /* 텍스트 색상 흰색 */
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #d1d1d1; /* 비활성화된 버튼 색상 */
+  border-color: #d1d1d1; /* 비활성화된 버튼 테두리 색상 */
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #08635d; /* 활성화된 페이지 버튼 색상 */
+  color: #fff; /* 활성화된 페이지의 텍스트 색상 */
 }
 
 .text-muted {
@@ -239,6 +289,16 @@ onBeforeUnmount(() => {
 .row-cols-2 > .col,
 .row-cols-lg-4 > .col {
   margin-bottom: 20px;
+}
+
+.edit-btn {
+  cursor: pointer;
+  width: 50px; /* 이미지 크기 조정 */
+  height: auto;
+}
+
+.mt-3 {
+  margin-bottom: 10px; /* 버튼과 다음 요소 사이의 간격을 늘림 */
 }
 
 .invisible {

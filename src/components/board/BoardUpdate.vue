@@ -41,8 +41,8 @@ onMounted(() => {
 <template>
     <div class="container py-5">
         <div class="card shadow-sm mx-auto" style="max-width: 400px; min-height: 450px;">
-            <div class="card-header text-center bg-primary text-white">
-                <h4>게시글 수정</h4>
+            <div class="card-header text-center" style="background-color: rgba(143, 255, 248, 0.6);">
+                <h4 style="color: #08635d;">게시글 수정</h4>
             </div>
             <div class="card-body">
                 <form @submit.prevent="modifyBoard">
@@ -51,8 +51,13 @@ onMounted(() => {
                         <label for="title">제목</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="content" placeholder="내용" v-model="boardStore.board.content">
-                        <label for="text">내용</label>
+                        <textarea 
+                            class="form-control" 
+                            id="content" 
+                            placeholder="내용" 
+                            v-model="boardStore.board.content" 
+                            style="height: 200px;"></textarea>
+                        <label for="content">내용</label>
                     </div>
 
                     <div class="image-gallery mb-3">
@@ -66,12 +71,6 @@ onMounted(() => {
                             class="img-thumbnail mb-3"
                             alt="게시글 이미지"
                         />
-                        <!-- <img
-                            src="@/assets/delete-btn-1.png"
-                            class="delete-btn"
-                            @click="removeImage(boardImage.id)"
-                            alt="삭제"
-                        /> -->
                         <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute" @click="removeImage(boardImage.id)">
                             X
                         </button>
@@ -84,11 +83,11 @@ onMounted(() => {
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary w-100">수정</button>
+                        <button type="submit" class="btn" style="background-color: rgba(143, 255, 248, 0.6); color: #08635d; width: 100%;">수정</button>
                     </div>
                 </form>
                 <br/>
-                <button class="btn btn-primary w-100" @click="backButton">뒤로</button>
+                <button class="btn btn-secondary w-100" @click="backButton">뒤로</button>
             </div>
         </div>
     </div>
@@ -144,6 +143,13 @@ button {
 .card {
   width: 100%;
   min-height: 450px;
+}
+
+/* 뒤로가기 버튼 스타일 */
+button.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    font-weight: bold;
 }
 
 </style>

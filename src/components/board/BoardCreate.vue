@@ -1,11 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useBoardStore } from '@/stores/board'
 import { useBoardImageStore } from '@/stores/boardImage'
 import BoardImageUploader from '@/components/board/BoardImageUploader.vue';
 
-const route = useRoute();
 const router = useRouter()
 const boardStore = useBoardStore()
 const boardImageStore = useBoardImageStore()
@@ -38,8 +37,8 @@ const createBoard = async function () {
 <template>
     <div class="container py-5">
         <div class="card shadow-sm mx-auto" style="max-width: 400px;">
-            <div class="card-header text-center bg-primary text-white">
-                <h4>게시글 등록</h4>
+            <div class="card-header text-center" style="background-color: rgba(143, 255, 248, 0.6);">
+                <h4 style="color: #08635d;">게시글 등록</h4>
             </div>
             <div class="card-body">
                 <form @submit.prevent="createBoard">
@@ -48,8 +47,13 @@ const createBoard = async function () {
                         <label for="title">제목</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="content" placeholder="내용" v-model="board.content">
-                        <label for="text">내용</label>
+                        <textarea 
+                            class="form-control" 
+                            id="content" 
+                            placeholder="내용" 
+                            v-model="board.content" 
+                            style="height: 200px;"></textarea>
+                        <label for="content">내용</label>
                     </div>
 
                     <div class="mb-3">
@@ -57,7 +61,7 @@ const createBoard = async function () {
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary w-100">등록</button>
+                        <button type="submit" class="btn" style="background-color: rgba(143, 255, 248, 0.6); color: #08635d; width: 100%;">등록</button>
                     </div>
                 </form>
             </div>
@@ -66,5 +70,16 @@ const createBoard = async function () {
 </template>
 
 <style scoped>
+.card-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    background-color: rgba(143, 255, 248, 0.6); /* 배경색 */
+}
 
+button {
+    background-color: rgba(143, 255, 248, 0.6); /* 버튼 배경색 */
+    color: #08635d; /* 버튼 글자색 */
+    border: none; /* 기본 버튼 테두리 제거 */
+    font-weight: bold; /* 버튼 글자 굵게 */
+}
 </style>
