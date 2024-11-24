@@ -48,7 +48,7 @@ const currentDate = formatDate(new Date());
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 25vh;
+  min-height: 75%;
   background: linear-gradient(to bottom, #f0f8ff, #ffe4e1);
   font-family: "Arial", sans-serif;
   padding: 20px;
