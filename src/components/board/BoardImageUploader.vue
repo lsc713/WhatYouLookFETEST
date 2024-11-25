@@ -55,7 +55,7 @@ const handleFileChange = (event) => {
   padding: 2rem .7rem .7rem .7rem;
   text-align: center;
   font-size: 1.125rem;
-  max-width: 320px;
+  min-width: 600px;
   margin: 0 auto;
 }
 

@@ -67,6 +67,7 @@ onMounted(() => {
     <div class="container">
         <div class="d-flex justify-content-center">
             <div class="content-area" style="max-width: 1000px; margin: 0 auto;">
+              <div v-if="commentStore.commentList.length > 0">
                 <div class="card-body" v-for="comment in commentStore.commentList" :key="comment.id">
                   <div class="d-flex align-items-center text-muted author-info">
                     <img :src="comment.userFilePath" alt="User's Profile" class="author-image" />
@@ -133,6 +134,10 @@ onMounted(() => {
                     />
                   </div>
                 </div>
+              </div>
+              <div v-else class="no-comments">
+                댓글이 없습니다
+              </div>
             </div>
         </div>
       </div>
@@ -140,8 +145,20 @@ onMounted(() => {
 
 <style scoped>
 .container {
-  padding: 0;
+  width: 100%;
+  min-width: 900px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
   margin-bottom: 10px;
+}
+
+.no-comments {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px; /* 필요에 따라 조정 */
+  font-size: 1rem; /* 글씨 크기 조정 */
+  color: #6c757d; /* 텍스트 색상 (옵션) */
 }
 
 .card-body {
@@ -197,5 +214,6 @@ onMounted(() => {
   border-radius: 50%; /* 원형 이미지 */
   margin-right: 10px; /* 이미지와 텍스트 간의 간격 */
 }
+
 
 </style>
