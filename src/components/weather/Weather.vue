@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-if="store.weatherList.length > 0">
-            <h3 class="text-center ">날씨 정보</h3>
+        <div v-if="store.weatherList.length > 0" class="homeText">
+            <h3 class="text-center homeText">날씨 정보</h3>
             <hr>
             <div class=" container text-center background-image">
                 <div class="row justify-content-start ">
@@ -145,6 +145,12 @@ watch(() => store.getPTY, mapWeatherData, { immediate: true });
 
 
 .iconSize {
-    font-size: 20px;
+    font-size: 50px;
+}
+
+.homeText{
+    font-weight: bold; /* 텍스트 굵게 */
+  font-size: 1.5rem; /* 텍스트 크기 (필요시 조정) */
+  color: #555555; /* 텍스트 색상 (필요시 조정) */
 }
 </style>

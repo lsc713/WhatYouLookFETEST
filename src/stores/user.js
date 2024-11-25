@@ -55,7 +55,7 @@ export const useUserStore = defineStore('userStore', () => {
       .catch((error) => {
         console.log(error)
         errorMessage.value = '중복된 아이디 닉네임입니다'
-        router.push({ name: 'signup' })
+        router.push({ name: 'userRegister' })
       })
   }
 

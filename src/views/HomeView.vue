@@ -1,6 +1,5 @@
 <template>
   <div class="home-container">
-    <h2>HomeView</h2>
     <Weather></Weather>
     <ClothRecommend></ClothRecommend>
   </div>

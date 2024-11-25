@@ -1,8 +1,8 @@
 <template>
     <div>
       <!-- 옷 추천 정보 표시 -->
-      <div v-if="clothStore.clothes.length > 0">
-        <h3 class="text-center">오늘의 옷 추천</h3>
+      <div v-if="clothStore.clothes.length > 0" class="homeText">
+        <h3 class="text-center homeText">오늘의 옷 추천</h3>
         <hr>
         <div class="container text-center background-image">
           <div class="row justify-content-start">
@@ -64,8 +64,10 @@
   </script>
   
   <style scoped>
-  .iconSize {
-    font-size: 20px;
-  }
+ .homeText{
+    font-weight: bold; /* 텍스트 굵게 */
+  font-size: 1.5rem; /* 텍스트 크기 (필요시 조정) */
+  color: #555555; /* 텍스트 색상 (필요시 조정) */
+}
   </style>
   

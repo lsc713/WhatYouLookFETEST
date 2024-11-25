@@ -4,7 +4,6 @@
     <div class="weather-container">
       <RouterView/>
     </div>
-    <Zodiac></Zodiac>
     
   </div>
 </template>
