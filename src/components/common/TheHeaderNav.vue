@@ -1,7 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">로고</a>
+            <RouterLink class="navbar-brand" :to="{name: 'home'}">
+                <img src="@/assets/WhatsYouLookTXT.png" alt="로고" style="height: 45px;"/>
+            </RouterLink>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -11,29 +13,33 @@
                 <RouterLink class="nav-link " aria-current="page" to="/">Weather</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink class="nav-link " to="/list">Board</RouterLink>
+                <RouterLink class="nav-link " :to="{name: 'boardList'}" @click.prevent="resetSearch">Board</RouterLink>
                 </li>
                 <li class="nav-item">
-                <RouterLink class="nav-link " to="/upload">FileUpload</RouterLink>
+                <RouterLink class="nav-link" :to="{name: 'userLogin'}" v-if="!userStore.isLoggedIn">Login</RouterLink>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link" @click="logout" v-if="userStore.isLoggedIn">Logout</a>
                 </li>
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
+                <a class="nav-link dropdown-toggle" @click.prevent="handleDropdownClick" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    UserOnly
                 </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <ul class="dropdown-menu" v-if="userStore.isLoggedIn">
+                    <li><RouterLink class="dropdown-item" :to="{name: 'todayFortune'}">TodayFortune</RouterLink></li>
+                    <li><RouterLink class="dropdown-item" :to="{name: 'userDetail'}">UserInfo</RouterLink></li>
+                    <li><hr class="dropdown-divider" v-if="userStore.isAdmin"></li>
+                    <!-- <li><RouterLink class="dropdown-item" :to="{name: 'userAdmin'}" v-if="userStore.isAdmin">Admin</RouterLink></li> -->
+                    <li><RouterLink class="dropdown-item" to="/upload" v-if="userStore.isAdmin">FileUpload</RouterLink></li>
                 </ul>
                 </li>
                 <!-- <li class="nav-item">
                 <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li> -->
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-info" type="submit">Search</button>
+            <form class="d-flex align-items-center" role="search">
+                <input v-model="boardStore.searchCondition.word" class="form-control me-2 search-input" type="search" placeholder="Search" aria-label="Search">
+                <img src="@/assets/search-btn.png" alt="검색 버튼" @click.prevent="searchBoard" class="search-btn"/>
             </form>
             </div>
         </div>
@@ -41,8 +47,44 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+import { useRouter } from "vue-router";
 import { RouterLink } from 'vue-router';
 import '@/assets/styles/main.scss'
+
+import { useUserStore } from '@/stores/user'
+import { useBoardStore } from "@/stores/board";
+
+const router = useRouter();
+const userStore = useUserStore();
+const boardStore = useBoardStore();
+
+const logout = function () { 
+    userStore.logout()
+}
+
+const handleDropdownClick = () => {
+  if (!userStore.isLoggedIn) {
+    alert('로그인이 필요합니다');
+  }
+};
+
+const resetSearch = function () {
+    boardStore.resetSearch()
+}
+
+const searchBoard = function () {
+  if (boardStore.searchCondition.word.trim() === "") {
+    alert("검색어를 입력하세요.");
+    return;
+  }
+  boardStore.searchBoard()
+  router.push({ name: "boardList" })
+};
+
+onMounted(() => {
+    userStore.checkLoginState()
+})
 </script>
 
 <style >
@@ -79,14 +121,30 @@ import '@/assets/styles/main.scss'
 }
 
 .navbar a {
-    color: #ffffff; /* 링크 텍스트 색상 설정 */
+    color: #2c2c2c; /* 텍스트 색상을 어두운 회색으로 변경 (수정) */
     text-decoration: none; /* 밑줄 제거 */
     padding: 0.5rem 1rem;
-    transition: color 0.3s ease; /* 텍스트 색상이 부드럽게 변하도록 설정 */
+    font-size: 1.3rem; /* 글자 크기 증가 (수정) */
+    font-weight: bold; /* 볼드체로 설정 (수정) */
+    transition: color 0.3s ease, transform 0.3s ease; /* 텍스트 색상이 부드럽게 변하도록 설정 */
 }
 
 .navbar a:hover {
-    color: #ffd700; /* 링크에 호버 시 색상 변경 */
+    color: #9a840a; /* 링크에 호버 시 색상 변경 */
+    transform: scale(1.05); /* 살짝 확대 효과 */
+}
+
+.search-input {
+  width: 200px; /* 검색창 크기 지정 */
+  height: 40px; /* 높이 일치 */
+  padding: 0.5rem; /* 내부 여백 */
+}
+
+.search-btn {
+  cursor: pointer;
+  width: 40px; /* 버튼 크기 조정 */
+  height: 40px; /* 버튼 크기 조정 */
+  margin-left: 8px; /* 버튼과 입력창 간의 간격 추가 */
 }
 
 @media (max-width: 768px) {
