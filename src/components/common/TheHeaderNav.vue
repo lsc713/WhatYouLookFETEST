@@ -103,7 +103,7 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between; /* 좌우 정렬을 통해 로고와 메뉴가 양쪽 끝에 위치하도록 */
     padding: 1rem; /* 적절한 여백 추가 */
-    margin: 8px;
+    margin: 0px;
     border-radius: 3%;
     position: sticky; /* 스크롤 시 상단에 고정 */
     top: 0;
