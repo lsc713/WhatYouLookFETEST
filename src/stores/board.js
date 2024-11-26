@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 import router from '@/router'
 
-const REST_BOARD_API = `http://localhost:8080/api/boards`
+const REST_BOARD_API = `${VUE_APP_API_URL}/api/boards`
 
 export const useBoardStore = defineStore('boardStore', () => {
 

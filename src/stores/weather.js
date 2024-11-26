@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-const REST_API_URL = `http://localhost:8080/api/v1/weather`;
+const REST_API_URL = `${VUE_APP_API_URL}/api/v1/weather`;
 
 export const useWeatherStore = defineStore('weather', () => {
   const weatherList = ref([]);

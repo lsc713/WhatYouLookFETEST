@@ -7,7 +7,7 @@ export const useClothStore = defineStore('cloth',()=>{
 
 
     const getClothesRecommendation = (temperature)=>{
-        axios.get('http://localhost:8080/api/v1/cloth',{
+        axios.get('${VUE_APP_API_URL}/api/v1/cloth',{
             params: {temperature}
             })
             .then((response)=>{
