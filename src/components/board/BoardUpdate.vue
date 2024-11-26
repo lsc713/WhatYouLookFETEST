@@ -40,7 +40,7 @@ onMounted(() => {
 
 <template>
     <div class="container py-5">
-        <div class="card shadow-sm mx-auto" style="max-width: 400px; min-height: 450px;">
+        <div class="card shadow-sm mx-auto">
             <div class="card-header text-center" style="background-color: rgba(143, 255, 248, 0.6);">
                 <h4 style="color: #08635d;">게시글 수정</h4>
             </div>
@@ -97,6 +97,19 @@ onMounted(() => {
 button {
     width: 100%;
     font-size: 1rem;
+}
+
+.container {
+    width: 100%;
+    min-height: 300px;
+    min-width: 1000px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+.card {
+  width: 100%;
 }
 
 .image-gallery {

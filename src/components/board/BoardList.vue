@@ -184,7 +184,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .card-img-top {
   object-fit: cover;
-  height: 250px;
+  height: 300px;
   width: 100%;
   cursor: pointer;
 }
@@ -284,6 +284,11 @@ onBeforeUnmount(() => {
 
 .row {
   min-height: calc(250px * 3 + 20px * 2); /* 3행 카드의 높이를 유지 */
+}
+
+.col {
+  min-height: 20px;
+  min-width: 330px;
 }
 
 .row-cols-2 > .col,

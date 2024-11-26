@@ -140,6 +140,10 @@ onMounted(() => {
   position: relative;
 }
 
+.card-text {
+  font-size: 24px;
+}
+
 .edit-btn {
   cursor: pointer;
   width: 50px;
@@ -199,6 +203,8 @@ onMounted(() => {
 
 .content-area {
     width: 100%;
+    min-height: 300px;
+    min-width: 900px;
     padding: 20px;
     border-radius: 8px;
     background-color: #f8f9fa;

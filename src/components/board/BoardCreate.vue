@@ -36,7 +36,7 @@ const createBoard = async function () {
 
 <template>
     <div class="container py-5">
-        <div class="card shadow-sm mx-auto" style="max-width: 400px;">
+        <div class="card shadow-sm mx-auto">
             <div class="card-header text-center" style="background-color: rgba(143, 255, 248, 0.6);">
                 <h4 style="color: #08635d;">게시글 등록</h4>
             </div>
@@ -74,6 +74,19 @@ const createBoard = async function () {
     font-size: 1.25rem;
     font-weight: bold;
     background-color: rgba(143, 255, 248, 0.6); /* 배경색 */
+}
+
+.container {
+    width: 100%;
+    min-height: 300px;
+    min-width: 1000px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+.card {
+  width: 100%;
 }
 
 button {

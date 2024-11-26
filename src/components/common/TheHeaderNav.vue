@@ -37,9 +37,21 @@
                 <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li> -->
             </ul>
-            <form class="d-flex align-items-center" role="search">
-                <input v-model="boardStore.searchCondition.word" class="form-control me-2 search-input" type="search" placeholder="Search" aria-label="Search">
-                <img src="@/assets/search-btn.png" alt="검색 버튼" @click.prevent="searchBoard" class="search-btn"/>
+            <form class="d-flex align-items-center" role="search" @submit.prevent="searchBoard">
+                <input 
+                    v-model="boardStore.searchCondition.word" 
+                    class="form-control me-2 search-input" 
+                    type="search" 
+                    placeholder="Search" 
+                    aria-label="Search" 
+                    @keyup.enter="searchBoard"
+                >
+                <img 
+                    src="@/assets/search-btn.png" 
+                    alt="검색 버튼" 
+                    @click.prevent="searchBoard" 
+                    class="search-btn"
+                />
             </form>
             </div>
         </div>

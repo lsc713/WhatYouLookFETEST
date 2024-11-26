@@ -36,7 +36,8 @@ onMounted(() => {
     <div v-if="userStore.isLoggedIn">
       <textarea 
         v-model="commentContent" 
-        placeholder="댓글을 작성하세요..." 
+        placeholder="  댓글을 작성하세요..." 
+        style="padding-top: 20px;"
         class="form-control"
         @keyup.enter="addComment"
       ></textarea>
@@ -53,5 +54,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.comment-create {
+  width: 100%;
+  min-width: 900px;
+  border-radius: 8px;
+}
 
 </style>
