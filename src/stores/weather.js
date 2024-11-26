@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-const REST_API_URL = `${import.meta.env.VUE_APP_API_URL}/api/v1/weather`;
+const REST_API_URL = `${import.meta.env.VITE_APP_API_URL}/api/v1/weather`;
 console.log(REST_API_URL)
 
 export const useWeatherStore = defineStore('weather', () => {
