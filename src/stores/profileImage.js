@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-const REST_USER_API = `${VUE_APP_API_URL}/api/users`
+const REST_USER_API = `${process.env.VUE_APP_API_URL}/api/users`
 
 export const useProfileImageStore = defineStore('profileImageStore', () => {
 
