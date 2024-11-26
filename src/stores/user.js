@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 import router from '@/router'
 
-const REST_USER_API = `${process.env.VUE_APP_API_URL}/api/users`
+const REST_USER_API = `${import.meta.env.VUE_APP_API_URL}/api/users`
 
 export const useUserStore = defineStore('userStore', () => {
 
